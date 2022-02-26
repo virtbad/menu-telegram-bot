@@ -22,7 +22,7 @@ export class StartCommandHandler extends CommandHandler {
     const user: User | null = await this.bot.prisma.user.findUnique({ where: { chatId: ctx.chat.id } });
     const subscribeButton = Markup.inlineKeyboard([[Markup.button.callback("Tägliche Benachrichtigungen einschalten", "subscribe")], [Markup.button.callback("Hilfe", "help")]]);
     const unsubscribeButton = Markup.inlineKeyboard([[Markup.button.callback("Tägliche Benachrichtigungen ausschalten", "unsubscribe")], [Markup.button.callback("Hilfe", "help")]]);
-    const button = !!user && user.notify ? unsubscribeButton : subscribeButton;
+    const button = (!!user && user.notify) || !user ? unsubscribeButton : subscribeButton;
     const welcomeText: string = "*Willkommen beim MensaBot!*\nErfahre, welche Menüs die Mensa aktuell serviert, welche Menüs in der Vergangenheit serviert wurden und welche Menüs in naher Zukunft serviert werden.";
     const welcome: Message.TextMessage = await ctx.reply(escapeMarkdownCharacters(welcomeText, ["*"]), { parse_mode: "MarkdownV2", reply_markup: button.reply_markup });
     await this.removeInitiatorCommand(ctx);
