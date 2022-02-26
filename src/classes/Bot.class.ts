@@ -1,9 +1,10 @@
 import { PrismaClient, User } from "@prisma/client";
+import { AxiosResponse } from "axios";
 import cron from "node-cron";
 import { Context, Telegraf } from "telegraf";
 import { ChatMember, Update } from "telegraf/typings/core/types/typegram";
 import { Menu } from "../types/Menu.types";
-import { getMenuDateText } from "../util";
+import { convertAxiosErrorString, getMenuDateText } from "../util";
 import { Config } from "./Config.class";
 import { CommandHandler } from "./handler/command/CommandHandler.handler";
 import { HelpCommandHandler } from "./handler/command/HelpCommandHandler.handler";
@@ -165,12 +166,12 @@ export class Bot {
             await this.bot.telegram.sendMessage(user.chatId, text, { parse_mode: "MarkdownV2" });
             Logger.info(`Sent daily notification to chat "${user.chatId}"`);
           } catch (e) {
-            Logger.error(`Unable to send daily notification to chat "${user.chatId}"`, e);
+            Logger.error(`Unable to send daily notification to chat "${user.chatId}"`, convertAxiosErrorString(e));
           }
         })
       );
     } catch (e) {
-      Logger.error("Failed to notify subscribed chats", e);
+      Logger.error("Failed to notify subscribed chats", convertAxiosErrorString(e));
     }
   }
 

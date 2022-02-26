@@ -76,3 +76,15 @@ export const getMenuDateText = (menus: Array<Menu>, date: Date = new Date()): st
   else menuText += "*Die Mensa hat heute geschlossen*";
   return menuText;
 };
+
+/**
+ * Function to convert a potential axios error to a string message
+ *
+ * @param e potential error
+ *
+ * @returns string representation
+ */
+
+export const convertAxiosErrorString = (e: any): string => {
+  return `${e?.message || "Unknown message"}\n${e?.response?.data?.message || "No error message"}`;
+};

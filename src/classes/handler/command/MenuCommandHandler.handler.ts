@@ -2,7 +2,7 @@ import { Context, Markup } from "telegraf";
 import { Update } from "telegraf/typings/core/types/typegram";
 import { webUrl } from "../../../config";
 import { Menu } from "../../../types/Menu.types";
-import { escapeMarkdownCharacters, getMenuDateText } from "../../../util";
+import { convertAxiosErrorString, escapeMarkdownCharacters, getMenuDateText } from "../../../util";
 import { Bot } from "../../Bot.class";
 import { Logger } from "../../Logger.class";
 import { DateMenuRequest } from "../../request/DateMenuRequest.request";
@@ -37,7 +37,7 @@ export class MenuCommandHandler extends CommandHandler {
       const buttons = Markup.inlineKeyboard(menus.map(({ title, id }) => Markup.button.url(title, `${webUrl}/menu/${id}`)));
       await ctx.reply(text, { parse_mode: "MarkdownV2", reply_markup: menus[0] ? buttons.reply_markup : undefined });
     } catch (e) {
-      Logger.error("An error occured whilst fetching menus for a given date", e);
+      Logger.error("An error occured whilst fetching menus for a given date", convertAxiosErrorString(e));
       await this.sendSelfDestroyingReply(ctx, "Es ist ein Fehler bei der Anfrage aufgetreten");
     }
   }

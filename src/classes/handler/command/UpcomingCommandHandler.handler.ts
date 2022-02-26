@@ -2,7 +2,7 @@ import { Context, Markup } from "telegraf";
 import { Update } from "telegraf/typings/core/types/typegram";
 import { webUrl } from "../../../config";
 import { Menu } from "../../../types/Menu.types";
-import { getMenuDateText } from "../../../util";
+import { convertAxiosErrorString, getMenuDateText } from "../../../util";
 import { Bot } from "../../Bot.class";
 import { Logger } from "../../Logger.class";
 import { UpcomingMenusRequest } from "../../request/UpcomingMenusRequest.request";
@@ -42,7 +42,7 @@ export class UpcomingCommandHandler extends CommandHandler {
         await ctx.reply(text, { parse_mode: "MarkdownV2", reply_markup: menus[0] ? buttons.reply_markup : undefined });
       }
     } catch (e) {
-      Logger.error("An error occured whilst fetching upcoming menus", e);
+      Logger.error("An error occured whilst fetching upcoming menus", convertAxiosErrorString(e));
       await this.sendSelfDestroyingReply(ctx, "Es ist ein Fehler bei der Anfrage aufgetreten");
     }
   }
