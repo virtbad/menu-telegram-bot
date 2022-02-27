@@ -69,7 +69,8 @@ export const escapeMarkdownCharacters = (text: string, except: Array<string> = [
  */
 
 export const getMenuDateText = (menus: Array<Menu>, date: Date = new Date()): string => {
-  const headString: string = `*__Menüs vom ${date.getDate()}. ${date.toLocaleDateString("de", { month: "long" })} ${date.getFullYear()}:__*\n\n`;
+  const menuDate: Date = new Date(menus.find(({ date }) => date)?.date || Date.now());
+  const headString: string = `*__Menüs vom ${menuDate.toLocaleDateString("de", { weekday: "long" })}, ${menuDate.toLocaleDateString("de", { dateStyle: "long" })}:__*\n\n`;
   let menuText: string = escapeMarkdownCharacters(headString, ["*", "_"]);
 
   if (menus.length > 0) menuText += menus.map(menuToText).join("\n\n");
