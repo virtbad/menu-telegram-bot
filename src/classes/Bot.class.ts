@@ -1,8 +1,8 @@
 import { PrismaClient, User } from "@prisma/client";
-import { AxiosResponse } from "axios";
 import cron from "node-cron";
-import { Context, Telegraf } from "telegraf";
+import { Context, Markup, Telegraf } from "telegraf";
 import { ChatMember, Update } from "telegraf/typings/core/types/typegram";
+import { webUrl } from "../config";
 import { Menu } from "../types/Menu.types";
 import { convertAxiosErrorString, getMenuDateText } from "../util";
 import { Config } from "./Config.class";
@@ -159,11 +159,12 @@ export class Bot {
       const text: string = getMenuDateText(data);
 
       if (data.length === 0) return Logger.info("Skipped daily notification as result of no daily menus");
+      const buttons = Markup.inlineKeyboard(data.map(({ title, id }) => Markup.button.url(title, `${webUrl}/menu/${id}`)));
 
       Promise.all(
         users.map(async (user: User) => {
           try {
-            await this.bot.telegram.sendMessage(user.chatId, text, { parse_mode: "MarkdownV2" });
+            await this.bot.telegram.sendMessage(user.chatId, text, { parse_mode: "MarkdownV2", reply_markup: buttons.reply_markup });
             Logger.info(`Sent daily notification to chat "${user.chatId}"`);
           } catch (e) {
             Logger.error(`Unable to send daily notification to chat "${user.chatId}"`, convertAxiosErrorString(e));

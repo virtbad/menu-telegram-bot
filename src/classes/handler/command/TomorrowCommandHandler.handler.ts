@@ -1,5 +1,6 @@
-import { Context } from "telegraf";
+import { Context, Markup } from "telegraf";
 import { Update } from "telegraf/typings/core/types/typegram";
+import { webUrl } from "../../../config";
 import { Menu } from "../../../types/Menu.types";
 import { getMenuDateText } from "../../../util";
 import { Bot } from "../../Bot.class";
@@ -20,8 +21,9 @@ export class TomorrowCommandHandler extends CommandHandler {
       const request: DateMenuRequest = new DateMenuRequest();
       const date: number = Date.now() + 86400000;
       const menus: Array<Menu> = await request.execute(date);
+      const buttons = Markup.inlineKeyboard(menus.map(({ title, id }) => Markup.button.url(title, `${webUrl}/menu/${id}`)));
       const text: string = getMenuDateText(menus, new Date(date));
-      await ctx.reply(text, { parse_mode: "MarkdownV2" });
+      await ctx.reply(text, { parse_mode: "MarkdownV2", reply_markup: menus[0] ? buttons.reply_markup : undefined });
     } catch (e) {
       await this.sendSelfDestroyingReply(ctx, "Es ist ein Fehler bei der Anfrage aufgetreten");
     }
