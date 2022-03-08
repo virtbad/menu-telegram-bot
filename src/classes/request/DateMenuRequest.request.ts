@@ -12,6 +12,6 @@ export class DateMenuRequest extends Request<Array<Menu>> {
   }
 
   public async execute(date?: number): Promise<Menu[]> {
-    return await this.sendRequest({ params: date ? { date: date } : undefined });
+    return await this.sendRequest({ params: !!date ? { date: date } : undefined });
   }
 }

@@ -68,8 +68,8 @@ export const escapeMarkdownCharacters = (text: string, except: Array<string> = [
  * @returns string with the menus
  */
 
-export const getMenuDateText = (menus: Array<Menu>, date: Date = new Date()): string => {
-  const menuDate: Date = new Date(menus.find(({ date }) => date)?.date || Date.now());
+export const getMenuDateText = (menus: Array<Menu>, date?: Date): string => {
+  const menuDate: Date = date || new Date(menus.find(({ date }) => date)?.date || Date.now());
   const headString: string = `*__Menüs vom ${menuDate.toLocaleDateString("de", { weekday: "long" })}, ${menuDate.toLocaleDateString("de", { dateStyle: "long" })}:__*\n\n`;
   let menuText: string = escapeMarkdownCharacters(headString, ["*", "_"]);
 

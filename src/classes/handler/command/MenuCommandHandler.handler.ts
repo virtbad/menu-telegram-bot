@@ -25,7 +25,10 @@ export class MenuCommandHandler extends CommandHandler {
         const split: Array<number> = args[0].split(".").map((value: string) => parseInt(value));
         if (split.length === 3 && !split.includes(NaN)) {
           const [day, month, year] = split;
-          const parsedDate: Date = new Date(`${month}.${day}.${year}`);
+          const parsedDay: string = day < 10 ? `0${day}` : day.toString();
+          const parsedMonth: string = month < 10 ? `0${month}` : month.toString();
+          const parsedDate: Date = new Date(`${parsedMonth}.${parsedDay}.${year}`);
+          if (parsedDate instanceof Date && isNaN(parsedDate as any)) return await this.sendSelfDestroyingReply(ctx, escapeMarkdownCharacters(`Dies ist ein ungültiges Datum. Nutze "dd.MM.YYYY" als Format!`));
           if (parsedDate.getTime() > Date.now()) return await this.sendSelfDestroyingReply(ctx, `Dieses Datum befindet sich in der Zukunft`);
           date = parsedDate.getTime();
         } else return await this.sendSelfDestroyingReply(ctx, escapeMarkdownCharacters(`Dies ist ein ungültiges Datum. Nutze "dd.MM.YYYY" als Format!`));
