@@ -34,7 +34,6 @@ API_URL=        // your api url e.g. https://api.example.com
 The following environment variables are optional:
 ```javascript
 WEBSITE_URL=    // your website url e.g. https://example.com
-
 ```
 
 ## Deploy
