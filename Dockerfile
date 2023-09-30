@@ -9,7 +9,7 @@ ENV DATABASE_URL=file:./menu_telegram_bot.db
 
 RUN echo "npm run migrate" > "startup.sh"
 RUN echo "npm run generate" >> "startup.sh"
-RUN echo "npm start" > "startup.sh"
+RUN echo "npm start" >> "startup.sh"
 RUN chmod +x startup.sh
 
 CMD [ "./startup.sh" ]
