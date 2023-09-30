@@ -34,7 +34,6 @@ API_URL=        // your api url e.g. https://api.example.com
 The following environment variables are optional:
 ```javascript
 WEBSITE_URL=    // your website url e.g. https://example.com
-
 ```
 
 ## Deploy
@@ -60,7 +59,7 @@ Since the telegram bot stores the chats it is part of in a sqlite database you'l
 
 An example for a run command would be:
 ```
-docker run menu-telegram-bot:latest -v ./config.json:/app/config.json -v ./prisma/menu_telegram_bot.db:/app/prisma/menu_telegram_bot.db -e API_URL=http://localhost:80
+docker run ghcr.io/virtbad/menu-telegram-bot:latest -v ./config.json:/app/config.json -v ./prisma/menu_telegram_bot.db:/app/prisma/menu_telegram_bot.db -e API_URL=http://localhost:80
 ```
 
 ### The Classic Way
