@@ -38,8 +38,8 @@ export class UpcomingCommandHandler extends CommandHandler {
         const date: number | undefined = sorted.find(({ date }) => date)?.date;
         if (!date) return;
         const text: string = getMenuDateText(menus, new Date(date));
-        const buttons = Markup.inlineKeyboard(menus.map(({ title, id }) => Markup.button.url(title, `${webUrl}/menu/${id}`)));
-        await ctx.reply(text, { parse_mode: "MarkdownV2", reply_markup: menus[0] ? buttons.reply_markup : undefined });
+        const buttons = !!webUrl ? Markup.inlineKeyboard(menus.map(({ title, id }) => Markup.button.url(title, `${webUrl}/menu/${id}`))) : undefined;
+        await ctx.reply(text, { parse_mode: "MarkdownV2", reply_markup: menus[0] ? buttons?.reply_markup : undefined });
       }
     } catch (e) {
       Logger.error("An error occured whilst fetching upcoming menus", convertAxiosErrorString(e));

@@ -159,12 +159,12 @@ export class Bot {
       const text: string = getMenuDateText(data);
 
       if (data.length === 0) return Logger.info("Skipped daily notification as result of no daily menus");
-      const buttons = Markup.inlineKeyboard(data.map(({ title, id }) => Markup.button.url(title, `${webUrl}/menu/${id}`)));
+      const buttons = !!webUrl ? Markup.inlineKeyboard(data.map(({ title, id }) => Markup.button.url(title, `${webUrl}/menu/${id}`))) : undefined;
 
       Promise.all(
         users.map(async (user: User) => {
           try {
-            await this.bot.telegram.sendMessage(user.chatId, text, { parse_mode: "MarkdownV2", reply_markup: buttons.reply_markup });
+            await this.bot.telegram.sendMessage(user.chatId, text, { parse_mode: "MarkdownV2", reply_markup: buttons?.reply_markup });
             Logger.info(`Sent daily notification to chat "${user.chatId}"`);
           } catch (e) {
             Logger.error(`Unable to send daily notification to chat "${user.chatId}"`, convertAxiosErrorString(e));
