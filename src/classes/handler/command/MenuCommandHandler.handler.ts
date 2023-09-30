@@ -37,8 +37,8 @@ export class MenuCommandHandler extends CommandHandler {
       const request: DateMenuRequest = new DateMenuRequest();
       const menus: Array<Menu> = await request.execute(date);
       const text: string = getMenuDateText(menus, date ? new Date(date) : new Date());
-      const buttons = Markup.inlineKeyboard(menus.map(({ title, id }) => Markup.button.url(title, `${webUrl}/menu/${id}`)));
-      await ctx.reply(text, { parse_mode: "MarkdownV2", reply_markup: menus[0] ? buttons.reply_markup : undefined });
+      const buttons = !!webUrl ? Markup.inlineKeyboard(menus.map(({ title, id }) => Markup.button.url(title, `${webUrl}/menu/${id}`))) : undefined;
+      await ctx.reply(text, { parse_mode: "MarkdownV2", reply_markup: menus[0] ? buttons?.reply_markup : undefined });
     } catch (e) {
       Logger.error("An error occured whilst fetching menus for a given date", convertAxiosErrorString(e));
       await this.sendSelfDestroyingReply(ctx, "Es ist ein Fehler bei der Anfrage aufgetreten");
